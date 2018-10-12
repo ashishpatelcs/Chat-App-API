@@ -1,7 +1,7 @@
 {
-  "name": "express-boilerplate",
+  "name": "chat-app-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "A chat app API built using Express.js, Node.js, MongoDB, JWT and deployed to cloud with documentation.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,13 +9,13 @@
   "author": "Ashish Patel <ashish.tripleclicks@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^2.0.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.5",
     "express-session": "^1.15.6",
     "express-socket.io-session": "^1.3.2",
-    "jsonwebtoken": "^8.1.0",
+    "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
@@ -24,5 +24,14 @@
     "pino": "^4.7.2",
     "request": "^2.83.0",
     "shortid": "^2.2.8"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashishpatelcs/Chat-App-API.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ashishpatelcs/Chat-App-API/issues"
+  },
+  "homepage": "https://github.com/ashishpatelcs/Chat-App-API#readme"
 }
