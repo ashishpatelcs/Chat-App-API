@@ -5,6 +5,8 @@ const response = require('./../libs/responseLib')
 const logger = require('./../libs/loggerLib');
 const validateInput = require('../libs/paramsValidationLib')
 const check = require('../libs/checkLib')
+const token = require('../libs/tokenLib')
+const passwordLib = require('../libs/passwordLib')
 
 /* Models */
 const UserModel = mongoose.model('User')
@@ -118,7 +120,7 @@ let loginFunction = (req, res) => {
     // validate password function
     let validatePassword = (user) => {
         return new Promise( (resolve, reject) => {
-            password.comparePassword(req.body.password, user.password, (err, isMatch) => {
+            passwordLib.comparePassword(req.body.password, user.password, (err, isMatch) => {
                 if(err) {
                     logger.error('login failed due to some error', 'loginfunction: validatePassword', 5)
                     let apiResponse = response.generate(true, 'login failed. some error occured.', 500, 10)
@@ -143,7 +145,7 @@ let loginFunction = (req, res) => {
     // generate token function
     let generateToken = (user) => {
         return new Promise( (resolve, reject) => {
-
+            token
         })
     }
 
