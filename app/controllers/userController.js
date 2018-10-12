@@ -13,6 +13,7 @@ const UserModel = mongoose.model('User')
 // start user signup function 
 
 let signUpFunction = (req, res) => {
+    // validate user input function
     let validateUserInput = () => {
         return new Promise( (resolve, reject) => {
             if(req.body.email) {
@@ -33,6 +34,7 @@ let signUpFunction = (req, res) => {
         })
     }
 
+    // create user function
     let createUser = () => {
         return new Promise( (resolve, reject) => {
             UserModel.findOne({ email: req.body.email })
@@ -71,6 +73,19 @@ let signUpFunction = (req, res) => {
             })
         })
     }
+
+    // handle the request and response
+    validateUserInput(req, res)
+    .then(createUser)
+    .then( resolve => {
+        delete resolve.password
+        let apiResponse = response.generate(false, 'Use Created!', 200, resolve)
+        res.send(apiResponse)
+    })
+    .catch( err => {
+        console.log(err)
+        res.send(err)
+    })
 }// end user signup function 
 
 // start of login function 
