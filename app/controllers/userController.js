@@ -145,7 +145,17 @@ let loginFunction = (req, res) => {
     // generate token function
     let generateToken = (user) => {
         return new Promise( (resolve, reject) => {
-            token
+            token.generateToken(user, (err, tokenDetails) => {
+                if(err) {
+                    logger.error('Failed to generate token', 'loginFunction: generateToken', 10)
+                    let apiResponse = response.generate(true, 'Error occured', 500, null)
+                    reject(apiResponse)
+                } else {
+                    tokenDetails.userId = user.userId
+                    tokenDetails.userDetails = user
+                    resolve(tokenDetails)
+                }
+            })
         })
     }
 
