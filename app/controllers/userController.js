@@ -17,7 +17,7 @@ let signUpFunction = (req, res) => {
     let validateUserInput = () => {
         return new Promise( (resolve, reject) => {
             if(req.body.email) {
-                if(!validInput.Email(req.body.email)) {
+                if(!validateInput.Email(req.body.email)) {
                     let apiResponse = response.generate(true, 'Email is Invalid', 500, null)
                     reject(apiResponse)
                 } else if (check.isEmpty(req.body.password)) {
@@ -90,7 +90,59 @@ let signUpFunction = (req, res) => {
 
 // start of login function 
 let loginFunction = (req, res) => {
-    
+    // find user function
+    let findUser = () => {
+        console.log('find user')
+        return new Promise( (resove, reject) => {
+            if(req.body.email) {
+                UserModel.findOne({ email: req.body.email })
+                .then(user => {
+                    if(check.isEmpty(user)) {
+                        logger.error('No user found', 'loginFunction : findUser', 5)
+                        let apiResponse = response.generate(true, 'Use does not exist', 500, null)
+                        reject(apiResponse)
+                    } else {
+                        logger.info('user found', 'loginFunction: findUser', 1)
+                        resolve(user)
+                    }
+                })
+                .catch(err => {
+                    logger.error('failed to retrieve user data', 'loginFunction : findUser', 10)
+                    let apiResponse = response.generate(true, 'Failed to find user', 500, null)
+                    reject(apiResponse)
+                })
+            }
+        })
+    }
+
+    // validate password function
+    let validatePassword = (user) => {
+        return new Promise( (resolve, reject) => {
+
+        })
+    }
+
+    // generate token function
+    let generateToken = (user) => {
+        return new Promise( (resolve, reject) => {
+
+        })
+    }
+
+    // login user
+    findUser(req, res)
+    .then(validatePassword)
+    .then(generateToken)
+    .then( resolve => {
+        let apiResponse = response.generate(false, 'Login successful', 200, resolve)
+        res.status(200)
+        res.send(apiResponse)
+    })
+    .catch( err => {
+        console.log(err)
+        res.status(err.status)
+        res.send(err)
+    })
 }
 
 
