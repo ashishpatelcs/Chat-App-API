@@ -118,7 +118,25 @@ let loginFunction = (req, res) => {
     // validate password function
     let validatePassword = (user) => {
         return new Promise( (resolve, reject) => {
-
+            password.comparePassword(req.body.password, user.password, (err, isMatch) => {
+                if(err) {
+                    logger.error('login failed due to some error', 'loginfunction: validatePassword', 5)
+                    let apiResponse = response.generate(true, 'login failed. some error occured.', 500, 10)
+                    reject(apiResponse)
+                } else if (isMatch) {
+                    let userObj = user.toObject
+                    delete userObj.password
+                    delete userObj.__v
+                    delete userObj._id
+                    delete userObj.createdOn
+                    delete userObj.modifiedOn
+                    resolve(user)
+                } else {
+                    logger.error('login failed due to invalid password', 'loginfunction: validatePassword', 5)
+                    let apiResponse = response.generate(true, 'login failed. wrong password.', 403, 10)
+                    reject(apiResponse)
+                }
+            })
         })
     }
 
