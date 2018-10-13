@@ -35,7 +35,11 @@ let isAuthorized = (req, res, next) => {
         })
     } else {
         logger.error('authToken is missing', 'Authorization Middleware', 10)
-        let apiResponse = response.generate(true, 'authToken is missing', 500, null)
+        let apiResponse = response.generate(true, 'authToken is missing', 400, null)
         res.send(apiResponse)
     }
+}
+
+module.exports = {
+    isAuthorized
 }
