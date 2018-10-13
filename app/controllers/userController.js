@@ -249,12 +249,21 @@ let loginFunction = (req, res) => {
 
 
 let logout = (req, res) => {
-  
+    AuthModel.findOneAndRemove({userId: req.user.userId})
+    .then(authUser => {
+        let apiResponse = response.generate(false, 'Logout successfully', 200, null)
+        res.send(apiResponse)
+    })
+    .catch(err => {
+        logger.error(err, 'userController : logout', 10)
+        let apiResponse = response.generate(true, 'Failed to logout', 500, null)
+        res.send(apiResponse)
+    })
 } // end of the logout function.
 
 
 // get all users details
-let getAllUsers = () => {
+let getAllUsers = (req, res) => {
     UserModel.find()
     .then(users => {
         let apiResponse = response.generate(false, 'ALl user details found', 200, users)
