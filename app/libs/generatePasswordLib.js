@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt')
-const logger = require('logger')
+const logger = require('../libs/loggerLib')
 const saltrounds = 10
 
 let hashPassword = (password) => {

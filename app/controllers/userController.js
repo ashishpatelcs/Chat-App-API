@@ -43,18 +43,17 @@ let signUpFunction = (req, res) => {
             .then(user => {
                 if(check.isEmpty(user)) {
                     let newuser = new UserModel({
-                        userId: shortid.generate,
+                        userId: shortid.generate(),
                         firstName: req.body.firstName,
                         lastName: req.body.lastName || '',
                         email: req.body.email.toLowerCase(),
                         mobileNumber: req.body.mobileNumber,
-                        password: passwordLib.hashpassword(req.body.password),
-                        apiKey: req.body.apiKey || req.params.apiKey || req.query.apiKey,
+                        password: passwordLib.hashPassword(req.body.password),
                         createOn: time.now()
                     })
-                    newuser.save( (err, user) => {
+                    newuser.save( (err, newuser) => {
                         if(err) {
-                            logger.error(err.message, 'signUpFunction: createUser', 10)
+                            logger.error(err, 'signUpFunction: createUser', 10)
                             let apiResponse = response.generate(true, 'Failed to create user', 500, null)
                             reject(apiResponse)
                         } else {
