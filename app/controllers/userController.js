@@ -199,14 +199,29 @@ let loginFunction = (req, res) => {
                             reject(apiResponse)
                         } else {
                             let responseBody = {
-                                authToken = newTokenDetails.authToken,
-                                userDetails = tokenDetails.userDetails
+                                authToken: newTokenDetails.authToken,
+                                userDetails: tokenDetails.userDetails
                             }
                             resolve(responseBody)
                         }
                     })
                 } else {
-
+                    userTokenDetails.authToken = tokenDetails.token
+                    userTokenDetails.tokenSecret = tokenDetails.tokenSecret
+                    userTokenDetails.tokenGenerationTime = time.now()
+                    userTokenDetails.save( (err, newTokenDetails) => {
+                        if (err) {
+                            logger.error(err, 'LoginFunction: saveToken', 10)
+                            let apiResponse = response.generate(true, 'Error occured while saving token', 500, null)
+                            reject(apiResponse)
+                        } else {
+                            let responseBody = {
+                                authToken: newTokenDetails.authToken,
+                                userDetails: tokenDetails.userDetails
+                            }
+                            resolve(responseBody)
+                        }
+                    })
                 }
             })
         })
