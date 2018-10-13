@@ -94,7 +94,7 @@ let loginFunction = (req, res) => {
     // find user function
     let findUser = () => {
         console.log('find user')
-        return new Promise( (resove, reject) => {
+        return new Promise( (resolve, reject) => {
             if(req.body.email) {
                 UserModel.findOne({ email: req.body.email }, (err, user) => {
                     if (err) {
@@ -142,13 +142,13 @@ let loginFunction = (req, res) => {
                     let apiResponse = response.generate(true, 'login failed. some error occured.', 500, 10)
                     reject(apiResponse)
                 } else if (isMatch) {
-                    let userObj = user.toObject
+                    let userObj = user.toObject()
                     delete userObj.password
                     delete userObj.__v
                     delete userObj._id
                     delete userObj.createdOn
                     delete userObj.modifiedOn
-                    resolve(user)
+                    resolve(userObj)
                 } else {
                     logger.error('login failed due to invalid password', 'loginfunction: validatePassword', 5)
                     let apiResponse = response.generate(true, 'login failed. wrong password.', 403, 10)
@@ -169,6 +169,7 @@ let loginFunction = (req, res) => {
                 } else {
                     tokenDetails.userId = user.userId
                     tokenDetails.userDetails = user
+                    // console.log(tokenDetails)
                     resolve(tokenDetails)
                 }
             })
