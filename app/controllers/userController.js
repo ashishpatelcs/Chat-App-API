@@ -10,7 +10,7 @@ const passwordLib = require('../libs/generatePasswordLib')
 
 /* Models */
 const UserModel = require('../models/User')
-const Auth = mongoose.model('../models/Auth')
+const AuthModel = require('../models/Auth')
 
 
 // start user signup function 
@@ -180,8 +180,35 @@ let loginFunction = (req, res) => {
     // save token
     let saveToken = (tokenDetails) => {
         return new Promise( (resolve, reject) => {
-            let token = tokenDetails.token
-            let
+            AuthModel.findOne({ userId: tokenDetails.userId }, (err, userTokenDetails) => {
+                if (err) {
+                    logger.error(err, 'LoginFunction: saveToken', 10)
+                    let apiResponse = response.generate(true, 'Error occured while retreiving token details', 500, null)
+                    reject(apiResponse)
+                } else if (check.isEmpty(userTokenDetails)) {
+                    let authToken = new AuthModel({
+                        userId: tokenDetails.userId,
+                        authToken: tokenDetails.token,
+                        tokenSecret: tokenDetails.tokenSecret,
+                        tokenGenerationTime: time.now()
+                    })
+                    authToken.save( (err, newTokenDetails) => {
+                        if (err) {
+                            logger.error(err, 'LoginFunction: saveToken', 10)
+                            let apiResponse = response.generate(true, 'Error occured while saving token', 500, null)
+                            reject(apiResponse)
+                        } else {
+                            let responseBody = {
+                                authToken = newTokenDetails.authToken,
+                                userDetails = tokenDetails.userDetails
+                            }
+                            resolve(responseBody)
+                        }
+                    })
+                } else {
+
+                }
+            })
         })
     }
 
