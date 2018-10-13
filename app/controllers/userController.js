@@ -96,7 +96,23 @@ let loginFunction = (req, res) => {
         console.log('find user')
         return new Promise( (resove, reject) => {
             if(req.body.email) {
-                UserModel.findOne({ email: req.body.email })
+                UserModel.findOne({ email: req.body.email }, (err, user) => {
+                    if (err) {
+                        logger.error('failed to retrieve user data', 'loginFunction : findUser', 10)
+                        let apiResponse = response.generate(true, 'Failed to find user', 500, null)
+                        reject(apiResponse)
+                    } else {
+                        if(check.isEmpty(user)) {
+                            logger.error('No user found', 'loginFunction : findUser', 5)
+                            let apiResponse = response.generate(true, 'Use does not exist', 500, null)
+                            reject(apiResponse)
+                        } else {
+                            logger.info('user found', 'loginFunction: findUser', 1)
+                            resolve(user)
+                        }
+                    }
+                })
+                /*
                 .then(user => {
                     if(check.isEmpty(user)) {
                         logger.error('No user found', 'loginFunction : findUser', 5)
@@ -112,6 +128,7 @@ let loginFunction = (req, res) => {
                     let apiResponse = response.generate(true, 'Failed to find user', 500, null)
                     reject(apiResponse)
                 })
+                */
             }
         })
     }
