@@ -21,15 +21,21 @@ let isAuthorized = (req, res, next) => {
                 let apiResponse = response.generate(true, 'No authorization key present or expired', 404, null)
                 res.send(apiResponse)
             } else {
-                token.verifyToken(authToken, (err, password) => {
+                token.verifyToken(newAuthToken.authToken, newAuthToken.tokenSecret, (err, decoded) => {
                     if(err) {
                         logger.error(err, 'Authorization Middleware: verifyToken', 10)
                         let apiResponse = response.generate(true, 'Authorizaiton token verification failed', 500, null)
                         res.send(apiResponse)
+                    } else {
+                        req.user = { userId: decoded.data.userId }
+                        next()
                     }
                 })
-                next()
             }
-        }
+        })
+    } else {
+        logger.error('authToken is missing', 'Authorization Middleware', 10)
+        let apiResponse = response.generate(true, 'authToken is missing', 500, null)
+        res.send(apiResponse)
     }
 }
