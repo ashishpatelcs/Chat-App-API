@@ -15,7 +15,8 @@ let generateToken = (data, cb) => {
             data
         }
         let tokenDetails = {
-            token: jwt.sign(claims, secretkey)
+            token: jwt.sign(claims, secretkey),
+            tokenSecret = secretkey
         }
         cb(null, tokenDetails)
     }
