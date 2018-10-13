@@ -9,7 +9,8 @@ const token = require('../libs/tokenLib')
 const passwordLib = require('../libs/generatePasswordLib')
 
 /* Models */
-const UserModel = mongoose.model('User')
+const UserModel = require('../models/User')
+const Auth = mongoose.model('../models/Auth')
 
 
 // start user signup function 
@@ -176,10 +177,19 @@ let loginFunction = (req, res) => {
         })
     }
 
+    // save token
+    let saveToken = (tokenDetails) => {
+        return new Promise( (resolve, reject) => {
+            let token = tokenDetails.token
+            let
+        })
+    }
+
     // login user
     findUser(req, res)
     .then(validatePassword)
     .then(generateToken)
+    .then(saveToken)
     .then( resolve => {
         let apiResponse = response.generate(false, 'Login successful', 200, resolve)
         res.status(200)

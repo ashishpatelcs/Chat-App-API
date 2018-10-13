@@ -2,8 +2,8 @@
 /**
  * Module Dependencies
  */
-const mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const  Schema = mongoose.Schema;
 
 let userSchema = new Schema({
   userId: {
@@ -41,4 +41,4 @@ let userSchema = new Schema({
 })
 
 
-mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);
