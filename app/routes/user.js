@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require("./../../app/controllers/userController");
+const authMiddleware = require('./../../app/middlewares/auth')
 const appConfig = require("./../../config/appConfig")
 
 module.exports.setRouter = (app) => {
@@ -8,10 +9,17 @@ module.exports.setRouter = (app) => {
     let baseUrl = `${appConfig.apiVersion}/users`;
 
     // defining routes.
+    app.get(`${baseUrl}/view/all`, authMiddleware.isAuthorized, userController.getAllUsers)
+
+    app.get(`${baseUrl}/:userId/details`, authMiddleware.isAuthorized, userController.getSingleUser)
+
+    app.put(`${baseUrl}/:userId/edit`, authMiddleware.isAuthorized, userController.editUser)
+
+    app.post(`${baseUrl}/:userId/delete`, authMiddleware.isAuthorized, userController.deleteUser)
 
 
     // params: firstName, lastName, email, mobileNumber, password
-    app.post(`${baseUrl}/signup`, userController.signUpFunction);
+    app.post(`${baseUrl}/signup`, authMiddleware.isAuthorized, userController.signUpFunction);
 
     /**
      * @apiGroup users
@@ -42,7 +50,7 @@ module.exports.setRouter = (app) => {
     */
 
     // params: email, password.
-    app.post(`${baseUrl}/login`, userController.loginFunction);
+    app.post(`${baseUrl}/login`, authMiddleware.isAuthorized, userController.loginFunction);
 
     /**
      * @apiGroup users
@@ -64,6 +72,6 @@ module.exports.setRouter = (app) => {
     */
 
     // auth token params: userId.
-    app.post(`${baseUrl}/logout`, userController.logout);
+    app.post(`${baseUrl}/logout`, authMiddleware.isAuthorized, userController.logout);
 
 }
