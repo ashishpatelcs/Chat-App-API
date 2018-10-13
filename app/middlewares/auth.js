@@ -21,7 +21,14 @@ let isAuthorized = (req, res, next) => {
                 let apiResponse = response.generate(true, 'No authorization key present or expired', 404, null)
                 res.send(apiResponse)
             } else {
-
+                token.verifyToken(authToken, (err, password) => {
+                    if(err) {
+                        logger.error(err, 'Authorization Middleware: verifyToken', 10)
+                        let apiResponse = response.generate(true, 'Authorizaiton token verification failed', 500, null)
+                        res.send(apiResponse)
+                    }
+                })
+                next()
             }
         }
     }

@@ -26,8 +26,8 @@ let generateToken = (data, cb) => {
     }
 }
 
-let verifyToken = (token, cb) => {
-    jwt.verify(token, secretkey, (err, decoded) => {
+let verifyToken = (token, secret, cb) => {
+    jwt.verify(token, secret, (err, decoded) => {
         if(err) {
             console.log('error occured while verifying token')
             console.log(err)
