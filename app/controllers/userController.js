@@ -253,10 +253,26 @@ let logout = (req, res) => {
 } // end of the logout function.
 
 
+// get all users details
+let getAllUsers = () => {
+    UserModel.find()
+    .then(users => {
+        let apiResponse = response.generate(false, 'ALl user details found', 200, users)
+        res.send(apiResponse)
+    })
+    .catch(err => {
+        logger.error(err, 'userController: getAllUsers', 10)
+        let apiResponse = response.generate(true, 'failed to get all user details', 500, null)
+        res.send(apiResponse)
+    })
+}
+
+
 module.exports = {
 
     signUpFunction: signUpFunction,
     loginFunction: loginFunction,
-    logout: logout
+    logout: logout,
+    getAllUsers
 
 }// end exports

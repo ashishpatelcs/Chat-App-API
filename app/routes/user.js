@@ -11,11 +11,11 @@ module.exports.setRouter = (app) => {
     // defining routes.
     app.get(`${baseUrl}/view/all`, authMiddleware.isAuthorized, userController.getAllUsers)
 
-    app.get(`${baseUrl}/:userId/details`, authMiddleware.isAuthorized, userController.getSingleUser)
+    // app.get(`${baseUrl}/:userId/details`, authMiddleware.isAuthorized, userController.getSingleUser)
 
-    app.put(`${baseUrl}/:userId/edit`, authMiddleware.isAuthorized, userController.editUser)
+    // app.put(`${baseUrl}/:userId/edit`, authMiddleware.isAuthorized, userController.editUser)
 
-    app.post(`${baseUrl}/:userId/delete`, authMiddleware.isAuthorized, userController.deleteUser)
+    // app.post(`${baseUrl}/:userId/delete`, authMiddleware.isAuthorized, userController.deleteUser)
 
 
     // params: firstName, lastName, email, mobileNumber, password
@@ -50,7 +50,7 @@ module.exports.setRouter = (app) => {
     */
 
     // params: email, password.
-    app.post(`${baseUrl}/login`, authMiddleware.isAuthorized, userController.loginFunction);
+    app.post(`${baseUrl}/login`, userController.loginFunction);
 
     /**
      * @apiGroup users
