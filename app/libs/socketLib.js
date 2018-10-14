@@ -28,6 +28,9 @@ let setServer = (server) => {
                     let fullName = `${currentUser.firstName} ${currentUser.lastName}`
                     console.log(`${fullName} is online`)
                     socket.emit(currentUser.userId, 'You are online')
+
+                    let user = { userId: currentUser.userId, fullName }
+                    allOnlineUsers.push(user)
                 }
             })
         })
