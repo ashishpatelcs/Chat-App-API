@@ -21,7 +21,13 @@ let setServer = (server) => {
         socket.on('set-user', authToken => {
             token.verifyToken(authToken, (err, user) => {
                 if (err) {
-                    socket.emit('auth-error', { status: 404, error: 'Please provide '})
+                    socket.emit('auth-error', { status: 500, error: 'Please provide correct authToken!' })
+                } else {
+                    let currentUser = user.data
+                    socket.userId = currentUser.userId
+                    let fullName = `${currentUser.firstName} ${currentUser.lastName}`
+                    console.log(`${fullName} is online`)
+                    socket.emit(currentUser.userId, 'You are online')
                 }
             })
         })
