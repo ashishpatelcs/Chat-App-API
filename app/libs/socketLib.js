@@ -19,7 +19,7 @@ let setServer = (server) => {
         socket.emit('verifyUser')
 
         socket.on('set-user', authToken => {
-            token.verifyToken(authToken, (err, user) => {
+            token.verifyTokenWithoutSecret(authToken, (err, user) => {
                 if (err) {
                     socket.emit('auth-error', { status: 500, error: 'Please provide correct authToken!' })
                 } else {
