@@ -14,6 +14,10 @@ let setServer = (server) => {
     let allOnlineUsers = []
     let io = socketio.listen(server)
     let myIO = io.of('')
+
+    myIO.on('connection', socket => {
+        socket.emit('verifyUser')
+    })
 }
 
 module.exports = {
