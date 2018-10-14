@@ -38,6 +38,10 @@ let setServer = (server) => {
         socket.on('disconnect', () => {
             console.log('user is disconnected');
             console.log(socket.userId);
+
+            let removeIndex = allOnlineUsers.map(user => user.userId).indexOf(socket.userId)
+            allOnlineUsers.splice(removeIndex, 1)
+            console.log(allOnlineUsers);
         })
     })
 }
