@@ -31,6 +31,11 @@ let setServer = (server) => {
                 }
             })
         })
+
+        socket.on('disconnect', () => {
+            console.log('user is disconnected');
+            console.log(socket.userId);
+        })
     })
 }
 
