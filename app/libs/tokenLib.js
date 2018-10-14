@@ -40,7 +40,22 @@ let verifyToken = (token, secret, cb) => {
     })
 }
 
+let verifyTokenWithoutSecret = (token, cb) => {
+    jwt.verify(token, secretkey, (err, decoded) => {
+        if(err) {
+            console.log('error occured while verifying token')
+            console.log(err)
+            cb(err, null)
+        } else {
+            console.log('user verified')
+            console.log(decoded)
+            cb(null, decoded)
+        }
+    })
+}
+
 module.exports = {
     generateToken,
-    verifyToken
+    verifyToken,
+    verifyTokenWithoutSecret
 }
