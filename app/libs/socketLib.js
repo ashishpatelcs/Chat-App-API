@@ -17,6 +17,14 @@ let setServer = (server) => {
 
     myIO.on('connection', socket => {
         socket.emit('verifyUser')
+
+        socket.on('set-user', authToken => {
+            token.verifyToken(authToken, (err, user) => {
+                if (err) {
+                    socket.emit('auth-error', { status: 404, error: 'Please provide '})
+                }
+            })
+        })
     })
 }
 
