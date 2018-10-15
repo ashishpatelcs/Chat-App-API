@@ -19,7 +19,7 @@ module.exports.setRouter = (app) => {
 
 
     // params: firstName, lastName, email, mobileNumber, password
-    app.post(`${baseUrl}/signup`, authMiddleware.isAuthorized, userController.signUpFunction);
+    app.post(`${baseUrl}/signup`, userController.signUpFunction);
 
     /**
      * @apiGroup users

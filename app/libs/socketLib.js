@@ -27,9 +27,9 @@ let setServer = (server) => {
                     socket.userId = currentUser.userId
                     let fullName = `${currentUser.firstName} ${currentUser.lastName}`
                     console.log(`${fullName} is online`)
-                    socket.emit(currentUser.userId, 'You are online')
+                    // socket.emit(currentUser.userId, 'You are online')
 
-                    let user = { userId: currentUser.userId, fullName }
+                    user = { userId: currentUser.userId, fullName }
                     allOnlineUsers.push(user)
                 }
             })
@@ -42,6 +42,10 @@ let setServer = (server) => {
             let removeIndex = allOnlineUsers.map(user => user.userId).indexOf(socket.userId)
             allOnlineUsers.splice(removeIndex, 1)
             console.log(allOnlineUsers);
+        })
+
+        socket.on('chat-msg', (msg) => {
+            myIO.emit(msg.receiverId, msg)
         })
     })
 }
