@@ -41,6 +41,7 @@ let setServer = (server) => {
                                     socket.room = 'MyChat'
                                     socket.join(socket.room)
                                     socket.to(socket.room).broadcast.emit('online-user-list', result)
+                                    socket.emit('online-user-list', result)
                                 }
                             })
                         }
@@ -82,6 +83,22 @@ let setServer = (server) => {
         socket.on('typing', name => {
             socket.to(socket.room).broadcast.emit('typing' , name)
         })
+
+        socket.on('mark-chat-as-seen', userDetails => {
+            // emit event to mark chat as seen with 2s delay to avoid affecting chat
+            setTimeout(function () {
+                eventEmitter.emit('mark-seen', userDetails)
+            }, 2000)
+        })
+
+        // socket.on('online-user-list', userList => {
+        //     redisLib.getAllUsers('onlineUsers', (err, result) => {
+        //         if (err) logger.error(err, 'socketLib: setuserOnline', 10)
+        //         else {
+        //             socket.to(socket.room).broadcast.emit('online-user-list', result)
+        //         }
+        //     })
+        // })
     })
 }
 
@@ -107,6 +124,22 @@ eventEmitter.on('save-chat', data => {
             logger.info('Chat saved!', 'socketLib: save-chat', 1)
         }
     })
+})
+
+eventEmitter.on('mark-seen', userDetails => {
+    let receiverId = userDetails.userId
+    let senderId = userDetails.senderId
+    
+    chatModel.updateMany(
+        { receiverId, senderId },
+        { seen: true },
+        (err, result) => {
+            if (err) logger.error(err, 'socketLib: mark-seen', 10)
+            else {
+                logger.info('Chat marked as seen!', 'socketLib: mark-seen', 1)
+            }
+        }
+    )
 })
 
 module.exports = {
