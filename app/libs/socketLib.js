@@ -28,16 +28,27 @@ let setServer = (server) => {
                     let currentUser = user.data
                     socket.userId = currentUser.userId
                     let fullName = `${currentUser.firstName} ${currentUser.lastName}`
-                    console.log(`${fullName} is online`)
+                    let key = currentUser.userId, value = fullName
+
+                    let setUserOnline = redisLib.setOnlineUser('onlineUsers', key, value, (err, result) => {
+                        if (err) logger.error(err, 'socketLib: setuserOnline', 10)
+                        else {
+                            redisLib.getAllUsers('onlineUsers', (err, result) => {
+                                if (err) logger.error(err, 'socketLib: setuserOnline', 10)
+                                else {
+                                    console.log(`${fullName} is online`)
+                                    // setting chat room
+                                    socket.room = 'MyChat'
+                                    socket.join(socket.room)
+                                    socket.to(socket.room).broadcast.emit('online-users-list', allOnlineUsers)
+                                }
+                            })
+                        }
+                    })
+
                     // socket.emit(currentUser.userId, 'You are online')
-
-                    user = { userId: currentUser.userId, fullName }
-                    allOnlineUsers.push(user)
-
-                    // setting chat room
-                    socket.room = 'MyChat'
-                    socket.join(socket.room)
-                    socket.to(socket.room).broadcast.emit('online-users-list', allOnlineUsers)
+                    // user = { userId: currentUser.userId, fullName }
+                    // allOnlineUsers.push(user)
                 }
             })
         })
