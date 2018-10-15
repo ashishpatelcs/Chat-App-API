@@ -1,4 +1,4 @@
-const socket = io('http://localhost:3000')
+const socket = io('http://localhost:3000/chat')
 const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RpZCI6Ii1wLVlvNDhKRCIsImlhdCI6MTUzOTU2NjgxMzc2NCwiZXhwIjoxNTM5NjUzMjEzLCJzdWIiOiJhdXRoVG9rZW4iLCJpc3MiOiJlZENoYXQiLCJkYXRhIjp7Im1vYmlsZU51bWJlciI6MCwiZW1haWwiOiJkZW1vQHNpbmdoLmNvbSIsImxhc3ROYW1lIjoiU2luZ2giLCJmaXJzdE5hbWUiOiJEZW1vIiwidXNlcklkIjoiS0RXakdlRXg0In19._qR3pwapNRrk0_6cMXkBG8HufS-x9_NVUWucqQj1MHM'
 const userId = 'KDWjGeEx4'
 
