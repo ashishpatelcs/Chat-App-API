@@ -8,6 +8,8 @@ const response = require('../libs/responseLib')
 const check = require('../libs/checkLib')
 const token = require('../libs/tokenLib')
 
+const chatModel = require('./../models/Chat')
+
 const eventEmitter = new events.EventEmitter()
 
 let setServer = (server) => {
@@ -52,8 +54,13 @@ let setServer = (server) => {
             socket.leave(socket.room)
         })
 
-        socket.on('chat-msg', (msg) => {
-            myIO.emit(msg.receiverId, msg)
+        socket.on('chat-msg', (data) => {
+            data.chatId = shortid.generate()
+            // emit event to save chat data with 2s delay to avoid affecting chat
+            setTimeout(function () {
+                eventEmitter.emit('save-chat', data)
+            }, 2000)
+            myIO.emit(msg.receiverId, data)
         })
 
         socket.on('typing', name => {
@@ -61,6 +68,30 @@ let setServer = (server) => {
         })
     })
 }
+
+// database operations events
+eventEmitter.on('save-chat', data => {
+    let newChat = new chatModel({
+        chatId: data.chatId,
+        senderName: data.senderName,
+        senderId: data.senderId,
+        receiverName: data.receiverName,
+        receiverId: data.receiverId,
+        message: data.message,
+        chatRoom: data.chatRoom || '',
+        createdOn: data.createdOn
+    })
+
+    newChat.save((err, result) => {
+        if (err) {
+            logger.error(err, 'socketLib: save-chat', 10)
+        } else if (check.isEmpty(result)) {
+            logger.error('Chat not saved!', 'socketLib: Save-chat', 5)
+        } else {
+            logger.info('Chat saved!', 'socketLib: save-chat', 1)
+        }
+    })
+})
 
 module.exports = {
     setServer
