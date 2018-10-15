@@ -22,7 +22,7 @@ let chatSocket = () => {
         console.log(data);
     })
 
-    socket.on('online-users-list', allOnlineUsers => {
+    socket.on('online-user-list', allOnlineUsers => {
         console.log('online users list updated!');
         console.log(allOnlineUsers)
     })

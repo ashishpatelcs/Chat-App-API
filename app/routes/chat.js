@@ -3,11 +3,9 @@ const auth = require('./../middlewares/auth')
 const chatController = require('./../controllers/chatController')
 const appconfig = require('./../../config/appConfig')
 
-const BASEURL = appconfig.apiVersion+'/chat'
-
 module.exports.setRouter = (app) => {
 
-    let BASEURL = `${appConfig.apiVersion}/chat`;
+    let BASEURL = `${appconfig.apiVersion}/chat`;
   
     /**
      * @apiGroup chat

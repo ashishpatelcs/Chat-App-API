@@ -40,7 +40,7 @@ let setServer = (server) => {
                                     // setting chat room
                                     socket.room = 'MyChat'
                                     socket.join(socket.room)
-                                    socket.to(socket.room).broadcast.emit('online-users-list', result)
+                                    socket.to(socket.room).broadcast.emit('online-user-list', result)
                                 }
                             })
                         }
@@ -60,7 +60,7 @@ let setServer = (server) => {
                     if (err) logger.error(err, 'socketLib: disconnect', 10)
                     else {
                         socket.leave(socket.room)
-                        socket.to(socket.room).broadcast.emit('online-users-list', result)
+                        socket.to(socket.room).broadcast.emit('online-user-list', result)
                     }
                 })
             }
@@ -76,7 +76,7 @@ let setServer = (server) => {
             setTimeout(function () {
                 eventEmitter.emit('save-chat', data)
             }, 2000)
-            myIO.emit(msg.receiverId, data)
+            myIO.emit(data.receiverId, data)
         })
 
         socket.on('typing', name => {
