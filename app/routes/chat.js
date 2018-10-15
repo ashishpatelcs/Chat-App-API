@@ -7,7 +7,7 @@ const BASEURL = appconfig.apiVersion+'/chat'
 
 module.exports.setRouter = (app) => {
 
-    let baseUrl = `${appConfig.apiVersion}/chat`;
+    let BASEURL = `${appConfig.apiVersion}/chat`;
   
     /**
      * @apiGroup chat
@@ -53,14 +53,14 @@ module.exports.setRouter = (app) => {
    */
   
     // params: senderId, receiverId, skip.
-    app.get(`${baseUrl}/get/for/user`, auth.isAuthorized, chatController.getUsersChat);
+    app.get(`${BASEURL}/get/for/user`, auth.isAuthorized, chatController.getUsersChat);
   
     // params: chatRoom, skip.
-    app.get(`${baseUrl}/get/for/group`, auth.isAuthorized, chatController.getGroupChat);
+    app.get(`${BASEURL}/get/for/group`, auth.isAuthorized, chatController.getGroupChat);
   
     
     // params: chatIdCsv.
-    app.post(`${baseUrl}/mark/as/seen`, auth.isAuthorized, chatController.markChatAsSeen);
+    app.post(`${BASEURL}/mark/as/seen`, auth.isAuthorized, chatController.markChatAsSeen);
   
     /**
      * @apiGroup chat
@@ -82,7 +82,7 @@ module.exports.setRouter = (app) => {
         }
    */
     // params: userId, senderId.
-    app.get(`${baseUrl}/count/unseen`, auth.isAuthorized, chatController.countUnseenChat);
+    app.get(`${BASEURL}/count/unseen`, auth.isAuthorized, chatController.countUnseenChat);
   
     /**
      * @apiGroup chat
@@ -129,7 +129,7 @@ module.exports.setRouter = (app) => {
         }
    */
     // params: userId, senderId, skip.
-    app.get(`${baseUrl}/find/unseen`, auth.isAuthorized, chatController.findUnseenChat);
+    app.get(`${BASEURL}/find/unseen`, auth.isAuthorized, chatController.findUnseenChat);
   
     /**
      * @apiGroup chat
@@ -172,6 +172,6 @@ module.exports.setRouter = (app) => {
         }
    */
     // params: userId.
-    app.get(`${baseUrl}/unseen/user/list`, auth.isAuthorized, chatController.findUserListOfUnseenChat);
+    app.get(`${BASEURL}/unseen/user/list`, auth.isAuthorized, chatController.findUserListOfUnseenChat);
   
   }
