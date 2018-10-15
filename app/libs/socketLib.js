@@ -55,6 +55,10 @@ let setServer = (server) => {
         socket.on('chat-msg', (msg) => {
             myIO.emit(msg.receiverId, msg)
         })
+
+        socket.on('typing', name => {
+            socket.to(socket.room).broadcast.emit('typing' , name)
+        })
     })
 }
 

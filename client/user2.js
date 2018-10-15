@@ -26,6 +26,15 @@ let chatSocket = () => {
         console.log('online users list updated!');
         console.log(allOnlineUsers)
     })
+    
+    let msginput = document.getElementById('msg')
+    msginput.onkeypress = () => {
+        socket.emit('typing', chatMsg.senderName)
+    }
+
+    socket.on('typing', name => {
+        console.log(name + ' is typing!');
+    })
 
     let button = document.getElementById('send')
     button.onclick = () => {
