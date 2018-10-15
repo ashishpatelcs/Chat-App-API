@@ -54,15 +54,20 @@ let setServer = (server) => {
         })
 
         socket.on('disconnect', () => {
-            console.log('user is disconnected');
-            console.log(socket.userId);
+            if (socket.userId) {
+                redisLib.deleteUser('onlineUsers', socket.userId)
+                redisLib.getAllUsers('onlineUsers', (err, result) => {
+                    if (err) logger.error(err, 'socketLib: disconnect', 10)
+                    else {
+                        socket.leave(socket.room)
+                        socket.to(socket.room).broadcast.emit('online-users-list', allOnlineUsers)
+                    }
+                })
+            }
 
-            let removeIndex = allOnlineUsers.map(user => user.userId).indexOf(socket.userId)
-            allOnlineUsers.splice(removeIndex, 1)
-            console.log(allOnlineUsers);
-
-            socket.to(socket.room).broadcast.emit('online-users-list', allOnlineUsers)
-            socket.leave(socket.room)
+            // let removeIndex = allOnlineUsers.map(user => user.userId).indexOf(socket.userId)
+            // allOnlineUsers.splice(removeIndex, 1)
+            // console.log(allOnlineUsers);
         })
 
         socket.on('chat-msg', (data) => {
