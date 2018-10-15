@@ -1,13 +1,14 @@
 const socket = io('http://localhost:3000')
-const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RpZCI6Ijl6Y3N0bVAtWiIsImlhdCI6MTUzOTUxMzc2NjY3OSwiZXhwIjoxNTM5NjAwMTY2LCJzdWIiOiJhdXRoVG9rZW4iLCJpc3MiOiJlZENoYXQiLCJkYXRhIjp7Im1vYmlsZU51bWJlciI6MCwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwibGFzdE5hbWUiOiJQYXRlbCIsImZpcnN0TmFtZSI6IkFzaGlzaCIsInVzZXJJZCI6IlJ3WWxLUjF2cCJ9fQ.n4W8EHxN0RrJ9bxAFRrxZ8NyL2SDNZOM3usrgFKKImY'
-const userId = 'RwYlKR1vp'
+const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RpZCI6Ii1wLVlvNDhKRCIsImlhdCI6MTUzOTU2NjgxMzc2NCwiZXhwIjoxNTM5NjUzMjEzLCJzdWIiOiJhdXRoVG9rZW4iLCJpc3MiOiJlZENoYXQiLCJkYXRhIjp7Im1vYmlsZU51bWJlciI6MCwiZW1haWwiOiJkZW1vQHNpbmdoLmNvbSIsImxhc3ROYW1lIjoiU2luZ2giLCJmaXJzdE5hbWUiOiJEZW1vIiwidXNlcklkIjoiS0RXakdlRXg0In19._qR3pwapNRrk0_6cMXkBG8HufS-x9_NVUWucqQj1MHM'
+const userId = 'KDWjGeEx4'
 
 let chatMsg = {
     createdOn: Date.now(),
-    receiverId: '',
-    receiverName: 'ABC Guy',
+    receiverId: 'RwYlKR1vp',
+    receiverName: 'Ashish Patel',
     senderId: userId,
-    senderName: 'Ashish Patel'
+    senderName: 'Demo Singh',
+    msg: ''
 }
 
 let chatSocket = () => {
@@ -20,6 +21,14 @@ let chatSocket = () => {
         console.log('You received a message')
         console.log(data);
     })
+
+    let button = document.getElementById('send')
+    button.onclick = () => {
+        let msgbody = document.getElementById('msg').value
+        console.log('msg: ' + msgbody);
+        chatMsg.msg = msgbody
+        socket.emit('chat-msg', chatMsg)
+    }
 }
 
 chatSocket()

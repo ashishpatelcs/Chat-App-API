@@ -4,10 +4,11 @@ const userId = 'RwYlKR1vp'
 
 let chatMsg = {
     createdOn: Date.now(),
-    receiverId: '',
-    receiverName: 'ABC Guy',
+    receiverId: 'KDWjGeEx4',
+    receiverName: 'Demo Singh',
     senderId: userId,
-    senderName: 'Ashish Patel'
+    senderName: 'Ashish Patel',
+    msg: ''
 }
 
 let chatSocket = () => {
@@ -20,6 +21,14 @@ let chatSocket = () => {
         console.log('You received a message')
         console.log(data);
     })
+
+    let button = document.getElementById('send')
+    button.onclick = () => {
+        let msgbody = document.getElementById('msg').value
+        console.log('msg: ' + msgbody);
+        chatMsg.msg = msgbody
+        socket.emit('chat-msg', chatMsg)
+    }
 }
 
 chatSocket()
