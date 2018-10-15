@@ -3,17 +3,17 @@ const mongoose = require('mongoose')
 const shortid = require('shortid')
 const events = require('events')
 
-const logger = require('../libs/loggerLib')
-const response = require('../libs/responseLib')
-const check = require('../libs/checkLib')
-const token = require('../libs/tokenLib')
+const logger = require('./loggerLib')
+const redisLib = require('./redisLib')
+const check = require('./checkLib')
+const token = require('./tokenLib')
 
 const chatModel = require('./../models/Chat')
 
 const eventEmitter = new events.EventEmitter()
 
 let setServer = (server) => {
-    let allOnlineUsers = []
+    // let allOnlineUsers = []
     let io = socketio.listen(server)
     let myIO = io.of('/chat')
 

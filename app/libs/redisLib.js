@@ -13,6 +13,20 @@ let getAllUsers = (hash, callback) => {
     })
 }
 
+let setOnlineUser = (hash, key, value, callback) => {
+    client.HMSET(hash, [key, value], (err, result) => {
+        if (err) callback(err, null)
+        else callback(null, result)
+    })
+}
+
+let deleteUser = (hash, key) => {
+    client.HDEL(hash, key)
+    return true
+}
+
 module.exports = {
-    getAllUsers
+    getAllUsers,
+    setOnlineUser,
+    deleteUser
 }
