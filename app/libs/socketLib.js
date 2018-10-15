@@ -13,7 +13,7 @@ const eventEmitter = new events.EventEmitter()
 let setServer = (server) => {
     let allOnlineUsers = []
     let io = socketio.listen(server)
-    let myIO = io.of('')
+    let myIO = io.of('/chat')
 
     myIO.on('connection', socket => {
         socket.emit('verifyUser')
@@ -31,6 +31,11 @@ let setServer = (server) => {
 
                     user = { userId: currentUser.userId, fullName }
                     allOnlineUsers.push(user)
+
+                    // setting chat room
+                    socket.room = 'MyChat'
+                    socket.join(socket.room)
+                    socket.to(socket.room).broadcast.emit('online-users-list', allOnlineUsers)
                 }
             })
         })
@@ -42,6 +47,9 @@ let setServer = (server) => {
             let removeIndex = allOnlineUsers.map(user => user.userId).indexOf(socket.userId)
             allOnlineUsers.splice(removeIndex, 1)
             console.log(allOnlineUsers);
+
+            socket.to(socket.room).broadcast.emit('online-users-list', allOnlineUsers)
+            socket.leave(socket.room)
         })
 
         socket.on('chat-msg', (msg) => {

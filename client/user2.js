@@ -22,6 +22,11 @@ let chatSocket = () => {
         console.log(data);
     })
 
+    socket.on('online-users-list', allOnlineUsers => {
+        console.log('online users list updated!');
+        console.log(allOnlineUsers)
+    })
+
     let button = document.getElementById('send')
     button.onclick = () => {
         let msgbody = document.getElementById('msg').value
